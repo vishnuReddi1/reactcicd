@@ -8,7 +8,11 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    name: Build and Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repository
@@ -19,11 +23,8 @@ jobs:
         with:
           node-version: '18'
 
-      - name: npm ci
-        run: npm ci
-
       - name: Install dependencies
-        run: npm install vite@latest
+        run: npm ci
 
       - name: Run tests
         run: npm test --if-present
